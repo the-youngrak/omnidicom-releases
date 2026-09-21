@@ -2,7 +2,7 @@
 
 Open, compare, measure and edit DICOM studies in a desktop workspace built for **research and education**. This is the official OmniDICOM download repository, maintained by the product's developer.
 
-**[Download OmniDICOM](https://omnidicom.com/#download) · [Try the free synthetic CT sample](samples/README.md) · [Read the practical guides](https://omnidicom.com/guides)**
+**[Download OmniDICOM](https://omnidicom.com/#download) · [Read the practical guides](https://omnidicom.com/guides)**
 
 ![OmniDICOM metadata editor displaying a synthetic test study](https://omnidicom.com/img/metadata-editor.png)
 
@@ -36,9 +36,7 @@ Basic includes the viewer workflows above. Professional adds advanced processing
 
 **Metadata edits save in place.** Make a copy first when you need the original files. Editing a patient name or ID is not a complete anonymization procedure.
 
-## Start without patient data
-
-The [free practice sample](samples/README.md) contains **24 synthetic CT slices** of a geometric phantom, not a patient scan. Use it to learn folder opening, scrolling and metadata editing before working with your own research data.
+## Practical guides
 
 - [Open DICOM files on a Mac](https://omnidicom.com/open-dicom-mac) — installation and first-study steps; the in-app folder workflow also applies to Windows.
 - [Edit and save DICOM metadata](https://omnidicom.com/edit-dicom-metadata) — work on a copy, edit a supported tag and reopen to verify.
@@ -49,7 +47,7 @@ The [free practice sample](samples/README.md) contains **24 synthetic CT slices*
 
 Image viewing and processing happen locally. Licence activation and periodic validation require an internet connection; PACS transfers use the destinations you select. Read the [privacy policy](https://omnidicom.com/privacy) for details, including update checks.
 
-**Research and educational use only. Not for diagnosis, treatment or clinical decisions.** This sample is not a diagnostic or image-quality benchmark.
+**Research and educational use only. Not for diagnosis, treatment or clinical decisions.**
 
 ## Support and licensing
 
