@@ -17,14 +17,21 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-      - name: Bootstrap stable WinGet on disposable runner
-        shell: powershell
+      - name: Install official current WinGet bundle on disposable runner
+        shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
           $ProgressPreference = 'SilentlyContinue'
-          Install-PackageProvider -Name NuGet -Force | Out-Null
-          Install-Module -Name Microsoft.WinGet.Client -Force -Repository PSGallery -Scope CurrentUser
-          Repair-WinGetPackageManager -AllUsers -Version 1.29.290
+          $base = 'https://github.com/microsoft/winget-cli/releases/download/v1.29.290'
+          $bundle = Join-Path $env:RUNNER_TEMP 'AppInstaller.msixbundle'
+          $depsZip = Join-Path $env:RUNNER_TEMP 'AppInstaller-deps.zip'
+          $depsDir = Join-Path $env:RUNNER_TEMP 'AppInstaller-deps'
+          Invoke-WebRequest "$base/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle" -OutFile $bundle
+          Invoke-WebRequest "$base/DesktopAppInstaller_Dependencies.zip" -OutFile $depsZip
+          Expand-Archive $depsZip $depsDir
+          $deps = @(Get-ChildItem $depsDir -Recurse -File | Where-Object { $_.FullName -match '\\x64\\' -and $_.Extension -in @('.appx','.msix') } | Select-Object -ExpandProperty FullName)
+          if ($deps.Count -eq 0) { throw 'No x64 App Installer dependencies found' }
+          Add-AppxPackage -Path $bundle -DependencyPath $deps
       - name: Validate, install and uninstall published package
         shell: pwsh
         run: ./installer/winget/check.ps1
