@@ -14,11 +14,8 @@ try {
     if ($hash -ne 'A3E6074624FB56B38956FDC3D1F6F851BCF641662CA620A14CC59F6B5A416FA1') { throw 'Published installer checksum mismatch' }
     $signature = Get-AuthenticodeSignature $package
     if ($signature.Status -ne 'Valid') { throw "Installer signature: $($signature.Status)" }
-    $winget = (Get-Command winget.exe -ErrorAction SilentlyContinue).Source
-    if (-not $winget) {
-        $app = Get-AppxPackage Microsoft.DesktopAppInstaller | Select-Object -First 1
-        $winget = Join-Path $app.InstallLocation 'winget.exe'
-    }
+    $app = Get-AppxPackage Microsoft.DesktopAppInstaller | Sort-Object Version -Descending | Select-Object -First 1
+    $winget = Join-Path $app.InstallLocation 'winget.exe'
     if (-not (Test-Path $winget)) { throw 'WinGet executable unavailable' }
     & $winget --info
     & $winget validate --manifest $manifest
