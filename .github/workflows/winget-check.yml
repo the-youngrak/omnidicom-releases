@@ -1,0 +1,36 @@
+name: winget-check
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/winget-validation]
+    paths: [installer/winget/**, .github/workflows/winget-check.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  installed-package:
+    # This check needs public installers only. Never consume private-repository minutes.
+    if: github.event.repository.private == false
+    runs-on: windows-2025
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bootstrap stable WinGet on disposable runner
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $ProgressPreference = 'SilentlyContinue'
+          Install-PackageProvider -Name NuGet -Force | Out-Null
+          Install-Module -Name Microsoft.WinGet.Client -Force -Repository PSGallery -Scope CurrentUser
+          Repair-WinGetPackageManager -AllUsers
+      - name: Validate, install and uninstall published package
+        shell: pwsh
+        run: ./installer/winget/check.ps1
+      - name: Summarize reports without artifact storage
+        if: always()
+        shell: pwsh
+        run: |
+          if (Test-Path dist/winget-check/result.json) { Get-Content dist/winget-check/result.json | Tee-Object -FilePath $env:GITHUB_STEP_SUMMARY -Append }
+          if (Test-Path dist/winget-check/runtime-checks.json) { Get-Content dist/winget-check/runtime-checks.json }
