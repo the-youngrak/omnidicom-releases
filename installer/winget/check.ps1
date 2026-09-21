@@ -33,8 +33,15 @@ try {
         if (Test-Path $installLog) { Get-Content $installLog -Tail 70 }
         if (Test-Path $stdout) { Get-Content $stdout -Tail 35 }
         if (Test-Path $stderr) { Get-Content $stderr -Tail 35 }
+        $diag = Join-Path $env:LOCALAPPDATA 'Packages/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe/LocalState/DiagOutputDir'
+        Get-ChildItem $diag -Filter '*.log' -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending | Select-Object -First 2 | ForEach-Object { Get-Content $_.FullName -Tail 65 }
         taskkill /PID $install.Id /T /F | Out-Null
-        throw 'WinGet installation timed out after 4 minutes'
+        $directLog = Join-Path $out 'direct-install.log'
+        $direct = Start-Process $package -ArgumentList @('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART','/SP-','/CURRENTUSER',"/LOG=`"$directLog`"") -PassThru
+        $null = $direct.Handle
+        if ($direct.WaitForExit(120000)) { Write-Output "Direct installer diagnostic exit: $($direct.ExitCode)" } else { taskkill /PID $direct.Id /T /F | Out-Null; Write-Output 'Direct installer also timed out' }
+        if (Test-Path $directLog) { Get-Content $directLog -Tail 45 }
+        throw 'WinGet installation timed out; direct installer diagnostic is not a WinGet pass'
     }
     Get-Content $stdout
     if (Test-Path $stderr) { Get-Content $stderr }
