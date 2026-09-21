@@ -22,8 +22,26 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "Manifest validation failed: $LASTEXITCODE" }
     & $winget settings --enable LocalManifestFiles
     if ($LASTEXITCODE -ne 0) { throw "Cannot enable local manifests: $LASTEXITCODE" }
-    & $winget install --manifest $manifest --silent --disable-interactivity --accept-package-agreements --accept-source-agreements
-    if ($LASTEXITCODE -ne 0) { throw "Manifest installation failed: $LASTEXITCODE" }
+    $installLog = Join-Path $out 'install.log'
+    $stdout = Join-Path $out 'winget-install.txt'
+    $stderr = Join-Path $out 'winget-install-errors.txt'
+    $installArgs = @('install', '--manifest', "`"$manifest`"", '--silent', '--disable-interactivity', '--accept-package-agreements', '--accept-source-agreements', '--log', "`"$installLog`"")
+    $install = Start-Process $winget -ArgumentList $installArgs -PassThru -RedirectStandardOutput $stdout -RedirectStandardError $stderr
+    $null = $install.Handle
+    if (-not $install.WaitForExit(240000)) {
+        Get-CimInstance Win32_Process | Where-Object { $_.Name -match 'winget|setup|OmniDICOM' } | Select-Object Name, ProcessId, ParentProcessId, CommandLine | Format-List
+        if (Test-Path $installLog) { Get-Content $installLog -Tail 70 }
+        if (Test-Path $stdout) { Get-Content $stdout -Tail 35 }
+        if (Test-Path $stderr) { Get-Content $stderr -Tail 35 }
+        taskkill /PID $install.Id /T /F | Out-Null
+        throw 'WinGet installation timed out after 4 minutes'
+    }
+    Get-Content $stdout
+    if (Test-Path $stderr) { Get-Content $stderr }
+    if ($install.ExitCode -ne 0) {
+        if (Test-Path $installLog) { Get-Content $installLog -Tail 70 }
+        throw "Manifest installation failed: $($install.ExitCode)"
+    }
     $key = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\{7E1C2D4A-5B3F-4C8E-9A61-0F2D6B7C3E51}_is1'
     $installed = Get-ItemProperty $key
     if ($installed.DisplayName -ne 'OmniDICOM' -or $installed.DisplayVersion -ne '1.0.8' -or $installed.Publisher -ne 'OmniDICOM') { throw 'Installed metadata does not match manifest' }
