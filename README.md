@@ -30,6 +30,7 @@ The buttons above always point to the current public release. [Versioned install
 | Explore volumes | Multiplanar reconstruction (MPR), MIP, 3D volume rendering and volume cutting |
 | Review angiography | DSA subtraction and mask alignment tools |
 | Transfer studies | PACS and DICOMweb connectivity |
+| Copy for slides | Copy Image (one panel) and Copy Layout (every visible panel, labelled A, B, C…) as high-resolution pictures ready to paste into PowerPoint slides |
 | Export | DICOM, PNG/JPEG/BMP images and supported MP4/WMV video workflows |
 
 Basic includes the viewer workflows above. Professional adds advanced processing and quantitative analysis. See the [full feature overview](https://omnidicom.com/#capabilities) for plan details and current availability.
@@ -38,9 +39,14 @@ Basic includes the viewer workflows above. Professional adds advanced processing
 
 ## Practical guides
 
+- [Put DICOM images into PowerPoint slides](https://omnidicom.com/dicom-to-powerpoint-slides) — copy one image or a labelled layout and paste it into a slide; no conversion, no upload.
+- [DICOM viewer for Windows 11 and 10](https://omnidicom.com/dicom-viewer-windows) — install from the Microsoft Store or the signed installer, then open .dcm files from File Explorer.
+- [DICOM viewer for Mac](https://omnidicom.com/dicom-viewer-mac) — the native Apple silicon app: MPR, 3D, cine and DSA.
 - [Open DICOM files on a Mac](https://omnidicom.com/open-dicom-mac) — installation and first-study steps; the in-app folder workflow also applies to Windows.
 - [Edit and save DICOM metadata](https://omnidicom.com/edit-dicom-metadata) — work on a copy, edit a supported tag and reopen to verify.
 - [Export DICOM images and cine video](https://omnidicom.com/export-dicom-images-video) — choose the scope, format and destination.
+- [De-identify DICOM copies](https://omnidicom.com/de-identify-dicom) and [export DICOM to NIfTI](https://omnidicom.com/dicom-to-nifti) — for research datasets.
+- [Korean guides (한국어 가이드)](https://omnidicom.com/guides-ko).
 - [Full user manual](https://omnidicom.com/manual).
 
 ## Local workflow and intended use
