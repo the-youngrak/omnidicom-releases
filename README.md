@@ -31,6 +31,7 @@ The buttons above always point to the current public release. [Versioned install
 | Review angiography | DSA subtraction and mask alignment tools |
 | Transfer studies | PACS and DICOMweb connectivity |
 | Copy for slides | Copy Image (one panel) and Copy Layout (every visible panel, labelled A, B, C…) as high-resolution pictures ready to paste into PowerPoint slides |
+| Save as slides | Save as PowerPoint (.pptx) saves the current image, or every image of the layout, as slides with the series, image number, window and measurements beside each picture ([step-by-step guide](https://omnidicom.com/dicom-to-powerpoint-slides?src=github)) |
 | Export | DICOM, PNG/JPEG/BMP images and supported MP4/WMV video workflows |
 
 Basic includes the viewer workflows above. Professional adds advanced processing and quantitative analysis. See the [full feature overview](https://omnidicom.com/#capabilities) for plan details and current availability.
@@ -39,7 +40,7 @@ Basic includes the viewer workflows above. Professional adds advanced processing
 
 ## Practical guides
 
-- [Put DICOM images into PowerPoint slides](https://omnidicom.com/dicom-to-powerpoint-slides) — copy one image or a labelled layout and paste it into a slide; no conversion, no upload.
+- [Put DICOM images into PowerPoint slides](https://omnidicom.com/dicom-to-powerpoint-slides?src=github) — copy one image or a labelled layout and paste it into a slide; no conversion, no upload.
 - [DICOM viewer for Windows 11 and 10](https://omnidicom.com/dicom-viewer-windows) — install from the Microsoft Store or the signed installer, then open .dcm files from File Explorer.
 - [DICOM viewer for Mac](https://omnidicom.com/dicom-viewer-mac) — the native Apple silicon app: MPR, 3D, cine and DSA.
 - [Open DICOM files on a Mac](https://omnidicom.com/open-dicom-mac) — installation and first-study steps; the in-app folder workflow also applies to Windows.
